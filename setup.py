@@ -1,7 +1,7 @@
 from unicodedata import name
 from setuptools import setup, find_packages
 from utility import read_params
-params=read_params('config/params.yaml')
+params=read_params()
 setup(
     name=params['base']['project_name'],
     version=params['base']['version'],
