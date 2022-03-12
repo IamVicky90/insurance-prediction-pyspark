@@ -2,7 +2,9 @@ from asyncore import read
 import os
 import shutil
 import yaml
-from app_logger.logger import Logger
+import json
+from app_logger import logger
+from datetime import datetime
 import uuid
 def create_directory(path: str, is_recreate: bool = False)->None:
     """Utility to create the dirctory
@@ -27,7 +29,7 @@ def read_params(config_path: str ='config/params.yaml')->dict:
         return yaml.safe_load(f)
 
 
-def get_log_object_for_training(collection_name: str, execution_id : str=None, executed_by: str=None, project_id :str=None, is_log_enabled : bool=True) -> Logger:
+def get_log_object_for_training(collection_name: str, execution_id : str=None, executed_by: str=None, project_id :str=None, is_log_enabled : bool=True) -> logger:
     """It will give the Log Object for training
 
     Args:
@@ -47,7 +49,38 @@ def get_log_object_for_training(collection_name: str, execution_id : str=None, e
         executed_by=params['base']['author']
     if project_id==None:
         project_id = params['base']['project_id']
-    logger_obj = Logger(execution_id=execution_id, executed_by=executed_by, project_id=project_id,
+    logger_obj = logger.Logger(execution_id=execution_id, executed_by=executed_by, project_id=project_id,
                         databasename=params['database_logs']['training_logs']['database_name'], collection_name=collection_name, is_log_enabled=is_log_enabled)
     return logger_obj
-
+def read_prediction_schema():
+    """Responsible for reading the schema from schema_prediction.json
+    """
+    params=read_params()
+    path=params['data_schemas']['prediction_schema']
+    with open(path) as f:
+        schema=json.load(f)
+    LengthOfDateStampInFile = schema['LengthOfDateStampInFile']
+    LengthOfTimeStampInFile = schema['LengthOfTimeStampInFile']
+    NumberofColumns = schema['NumberofColumns']
+    ColName = schema['ColName']
+    return LengthOfDateStampInFile,LengthOfTimeStampInFile,NumberofColumns,ColName
+def read_training_schema():
+    """Responsible for reading the schema from schema_training.json
+    """
+    params=read_params()
+    path = params['data_schemas']['training_schema']
+    with open(path) as f:
+        schema=json.load(f)
+    LengthOfDateStampInFile = schema['LengthOfDateStampInFile']
+    LengthOfTimeStampInFile = schema['LengthOfTimeStampInFile']
+    NumberofColumns = schema['NumberofColumns']
+    ColName = schema['ColName']
+    return LengthOfDateStampInFile,LengthOfTimeStampInFile,NumberofColumns,ColName
+def get_date():
+    """Returns the current date.
+    """
+    return datetime.now().date()
+def get_time():
+    """Returns the current time
+    """
+    return datetime.now().time().strftime('%H-%M-%S')
