@@ -1,0 +1,12 @@
+base:
+  project_id : 5
+  project_name : insurance-prediction-pyspark
+  version : 1.0
+  description : "It will predict the insurance related predictions whether you get the insurance or not based on the independent features, to overcome the risk of big data I created it with the help of pyspark"
+  author : vicky
+  license: MIT
+  random_state : 42
+  test_size : 0.2
+mongodb_credentials_from_env_variables :
+  user_name : MONGO_USER
+  user_password: MONGO_PASSWORD
