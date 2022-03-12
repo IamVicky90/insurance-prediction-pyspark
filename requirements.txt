@@ -1,0 +1,4 @@
+certifi==2021.5.30
+PyYAML==6.0
+yml==0.0.1
+-e git+https://github.com/IamVicky90/insurance-prediction-pyspark.git@2bab829a6332e99299ae30373ad6545afa910955#egg=insurance_prediction_pyspark
