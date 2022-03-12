@@ -10,3 +10,9 @@ base:
 mongodb_credentials_from_env_variables :
   user_name : MONGO_USER
   user_password: MONGO_PASSWORD
+database_logs:
+  training_logs: 
+    database_name: insurance_training_logs
+  prediction_logs: 
+    database_name: insurance_prediction_logs
+
