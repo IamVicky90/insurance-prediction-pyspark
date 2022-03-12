@@ -2,7 +2,7 @@ base:
   project_id : 5
   project_name : insurance-prediction-pyspark
   version : 1.0
-  description : "It will predict the insurance related predictions whether you get the insurance or not based on the independent features, to overcome the risk of big data I created it with the help of pyspark"
+  description : "It will predict based on the insurance related things whether you get the insurance or not, based on the independent features, to overcome the risk of big data I created it with the help of pyspark"
   author : vicky
   license: MIT
   random_state : 42
