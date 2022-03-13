@@ -25,7 +25,7 @@ class Logger:
                     "executed_by":self.executed_by,
                     "project_id":self.project_id,
                     "message":message,
-                    'updated_date_and_time': datetime.now().strftime("%H:%M:%S")
+                    'updated_date_and_time': datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
                 }
                 mongo_ops=Mongo_operations()
                 mongo_ops.insert_one_record(log_data,self.databasename,self.collection_name)
