@@ -4,20 +4,19 @@ from insurance_exception.insurance_exception import InsuranceException
 import sys
 import utility
 import os
+import argparse
+log_collection_name="data_validation"
 class Data_Validation:
-    def __init__(self,collection_name: str,config,is_log_enabled : bool=True):
-    # def __init__(self,logger,collection_name: str,config,is_log_enabled : bool=True):
+    def __init__(self,logger,config):
         """Responsible for Data Validation.
 
         Args:
             logger (logger_obj): Object of the logger.
-            collection_name (str): Name of the mongodb collection to store logs.
-            is_log_enabled (bool, optional): If True then only the loggings will be store. Defaults to True.
+            config (str): path of the configuration file
         """
-        self.__collection_name = collection_name
-        self.__is_log_enabled = is_log_enabled
-        # self.__logger=logger
-        self.__config=config
+        self.__logger=logger
+        self.__config=utility.read_params(config)
+        self.__logger.log("Data_Validation started....")
     def return_regular_expression(self):
         """Return the regular expression for the data files to make sure that it only validates the right files
         """
@@ -29,10 +28,11 @@ class Data_Validation:
             file_path (str): Path of the file
         """
         try:
-            #problem
             self.create_bad_data_directory(folder_path)
             shutil.move(
-                os.path.join(folder_path, file_name), self.__configself.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory'])
+                os.path.join(folder_path, file_name), self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory'])
+            self.__logger.log(
+                f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__.__str__, Data_Validation.__class__.__name__, self.move_to_bad_archive_directory.__name__), sys)
@@ -48,6 +48,8 @@ class Data_Validation:
             self.create_good_data_directory(folder_path)
             shutil.copy(
                 os.path.join(folder_path, file_name), self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory'])
+            self.__logger.log(
+                f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory']}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__.__str__, Data_Validation.__class__.__name__, self.copy_to_good_data_directory.__name__), sys)
@@ -67,6 +69,7 @@ class Data_Validation:
         """
         utility.create_directory(path)
     def validate_file_name(self,batch_directory_path):
+        self.__logger.log("Filename validation started....")
         files = os.listdir(batch_directory_path)
         LengthOfDateStampInFile, LengthOfTimeStampInFile, _, _ = utility.read_training_schema()
         match_string = self.return_regular_expression()
@@ -78,13 +81,28 @@ class Data_Validation:
             if re.match(match_string, file_name) and datestamp_length == LengthOfDateStampInFile and timestamp_length == LengthOfTimeStampInFile:
                 self.copy_to_good_data_directory(os.path.join(
                     os.getcwd(), batch_directory_path), file_name)
+                self.__logger.log(f"Filename {file_name} is match with the regex so moving to Good Data Directory path")
                 print('copy')
             else:
                 self.move_to_bad_archive_directory(
                     os.path.join(os.getcwd(), batch_directory_path), file_name)
-                print('move')
+                self.__logger.log(f"Filename {file_name} is not match with the regex so moving to Bad Data Directory path")
+def validation_main(datasource,collection_name,config,is_log_enabled):
+    logger = utility.get_log_object_for_training(
+        collection_name=collection_name, is_log_enabled=is_log_enabled)
+    logger.log("Validate main started....")
+    data_validation = Data_Validation(logger=logger, config=config)
+    logger.log("Data Validation Run Successfully....")
+    data_validation.validate_file_name(datasource)
+    logger.log("validate_file_name funtion Run Successfully....")
 
-
-obj = Data_Validation('test2', utility.read_params())
-obj.validate_file_name('data/training_batch_files')
+if __name__=='__main__':
+    args=argparse.ArgumentParser()
+    args.add_argument("--config", default=os.path.join("config","params.yaml"))
+    args.add_argument("--log_collection_name", default=log_collection_name)
+    args.add_argument("--is_log_enabled", default=True)
+    args.add_argument("--data_source", default=os.path.join(os.getcwd(), utility.read_params()['batch_file']['training_batch_files_path']))
+    parsed_args=args.parse_args()
+    validation_main(datasource=parsed_args.data_source,
+                    collection_name=parsed_args.log_collection_name, config=parsed_args.config, is_log_enabled=parsed_args.is_log_enabled)
     
