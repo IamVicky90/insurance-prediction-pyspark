@@ -29,7 +29,7 @@ def read_params(config_path: str ='config/params.yaml')->dict:
         return yaml.safe_load(f)
 
 
-def get_log_object_for_training(collection_name: str, execution_id : str=None, executed_by: str=None, project_id :str=None, is_log_enabled : bool=True) -> logger:
+def get_log_object_for_training(collection_name: str, execution_id : str=None, executed_by: str=None, project_id :str=None, is_log_enabled : bool=True):
     """It will give the Log Object for training
 
     Args:
