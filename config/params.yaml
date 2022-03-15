@@ -16,16 +16,16 @@ database_logs:
   prediction_logs: 
     database_name: insurance_prediction_logs
 batch_file: 
-      training_batch_files_path: ./data/training_batch_files
-      prediction_batch_files_path: ./data/Prediction_Batch_files
+      training_batch_files_path: ./data/training_batch_files/
+      prediction_batch_files_path: ./data/Prediction_Batch_files/
 artifacts:
   Data_Directories:
     training:
-      Good_Data_Directory: ./artifacts/training_data/good_raw_data
-      Bad_Data_Directory: ./artifacts/training_data/bad_raw_data
+      Good_Data_Directory: ./artifacts/training_data/good_raw_data/
+      Bad_Data_Directory: ./artifacts/training_data/bad_raw_data/
     prediction:
-      Good_Data_Directory: ./artifacts/prediction_data/good_raw_data
-      Bad_Data_Directory: ./artifacts/prediction_data/bad_raw_data
+      Good_Data_Directory: ./artifacts/prediction_data/good_raw_data/
+      Bad_Data_Directory: ./artifacts/prediction_data/bad_raw_data/
 data_schemas:
   prediction_schema: ./config/schema_prediction.json
   training_schema: ./config/schema_training.json
