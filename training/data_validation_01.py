@@ -35,7 +35,7 @@ class Data_Validation:
                 f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
-                Data_Validation.__module__.__str__, Data_Validation.__class__.__name__, self.move_to_bad_archive_directory.__name__), sys)
+                Data_Validation.__module__, Data_Validation.__class__.__name__, self.move_to_bad_archive_directory.__name__), sys)
             raise error
 
     def copy_to_good_data_directory(self, folder_path, file_name: str):
@@ -52,7 +52,7 @@ class Data_Validation:
                 f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory']}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
-                Data_Validation.__module__.__str__, Data_Validation.__class__.__name__, self.copy_to_good_data_directory.__name__), sys)
+                Data_Validation.__module__, Data_Validation.__class__.__name__, self.copy_to_good_data_directory.__name__), sys)
             raise error
     def create_good_data_directory(self,path):
         """Responsible for creating Good Data directory
