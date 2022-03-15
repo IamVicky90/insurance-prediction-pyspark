@@ -79,7 +79,7 @@ def read_training_schema():
 def get_date():
     """Returns the current date.
     """
-    return datetime.now().date()
+    return datetime.now().date().strftime('%d-%m-%y')
 def get_time():
     """Returns the current time
     """
