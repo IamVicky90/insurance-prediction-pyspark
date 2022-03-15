@@ -28,11 +28,13 @@ class Data_Validation:
             file_path (str): Path of the file
         """
         try:
-            self.create_bad_data_directory(folder_path)
+            Bad_Data_Directory = self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']
+            destination_folder=os.path.join(Bad_Data_Directory,utility.get_date(),utility.get_time())
+            self.create_bad_data_directory(destination_folder)
             shutil.move(
-                os.path.join(folder_path, file_name), self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory'])
+                os.path.join(folder_path, file_name), destination_folder)
             self.__logger.log(
-                f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']}")
+                f"Successfully move the file {file_name} to {destination_folder}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__, Data_Validation.__class__.__name__, self.move_to_bad_archive_directory.__name__), sys)
@@ -45,11 +47,14 @@ class Data_Validation:
             file_path (str): Path of the file
         """
         try:
-            self.create_good_data_directory(folder_path)
+            Good_Data_Directory = self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory']
+            destination_folder = os.path.join(
+                Good_Data_Directory, utility.get_date(), utility.get_time())
+            self.create_good_data_directory(destination_folder)
             shutil.copy(
-                os.path.join(folder_path, file_name), self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory'])
+                os.path.join(folder_path, file_name), destination_folder)
             self.__logger.log(
-                f"Successfully move the file {file_name} to {self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory']}")
+                f"Successfully move the file {file_name} to {destination_folder}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__, Data_Validation.__class__.__name__, self.copy_to_good_data_directory.__name__), sys)
@@ -82,7 +87,6 @@ class Data_Validation:
                 self.copy_to_good_data_directory(os.path.join(
                     os.getcwd(), batch_directory_path), file_name)
                 self.__logger.log(f"Filename {file_name} is match with the regex so moving to Good Data Directory path")
-                print('copy')
             else:
                 self.move_to_bad_archive_directory(
                     os.path.join(os.getcwd(), batch_directory_path), file_name)
