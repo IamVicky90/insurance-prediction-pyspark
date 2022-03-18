@@ -26,7 +26,7 @@ class Data_Loader:
         """
         try:
             self.logger.log("Loading data from path has been started")
-            df= self.ss.read.csv(path,header=True)
+            df= self.ss.read.csv(path,header=True,inferSchema=True)
             self.logger.log(f"Sucessfully Load the data from path {path}")
             return df
         except Exception:
