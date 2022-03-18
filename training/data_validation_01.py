@@ -105,7 +105,11 @@ class Data_Validation:
         if list(ColName.keys()) != df_columns:
             self.move_to_bad_archive_directory(
                 file_path)
+            self.__logger.log(
+                f"column names does not match with the schema so it is moved to bad archive directory from {file_path}")
             return 0
+        self.__logger.log(
+            f"column names of file {file_path} match with the schema")
         return 1
 
     def remove_columns_that_have_more_than_20_pc_null_values(self, df, file_path):
@@ -120,6 +124,8 @@ class Data_Validation:
                     file_path)
                 self.__logger.log(f"column {col} has null values more than 20% so it is moved to bad archive directory from {file_path}")
                 return 0
+        self.__logger.log(
+            f"columns of file {file_path} does not have more than 20% of null value")
         return 1
 
 
