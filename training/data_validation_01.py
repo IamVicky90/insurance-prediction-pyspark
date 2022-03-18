@@ -102,11 +102,25 @@ class Data_Validation:
     def validate_column_names(self, df, file_path):
         df_columns = df.columns
         LengthOfDateStampInFile, LengthOfTimeStampInFile, NumberofColumns, ColName = read_training_schema()
-        print("ColNames",list(ColName.keys()))
-        print("df_columns", df_columns, 'file', file_path)
         if list(ColName.keys()) != df_columns:
             self.move_to_bad_archive_directory(
                 file_path)
+            return 0
+        return 1
+
+    def remove_columns_that_have_more_than_20_pc_null_values(self, df, file_path):
+        """Remove the columns that have more than 20 % null values
+
+        Args:
+            df (spark.dataframe): DataFrame
+        """
+        for col in df.columns:
+            if df.filter(df[col].isNull()).count() > 0.2 * df.count():
+                self.move_to_bad_archive_directory(
+                    file_path)
+                self.__logger.log(f"column {col} has null values more than 20% so it is moved to bad archive directory from {file_path}")
+                return 0
+        return 1
 
 
 def validation_main(datasource,collection_name:str,config,is_log_enabled:bool):
@@ -128,13 +142,19 @@ def validation_main(datasource,collection_name:str,config,is_log_enabled:bool):
         if file_name.endswith(".csv"):
             file_path=os.path.join(os.getcwd(),datasource,file_name)
             if data_validation.validate_file_name( file_name, file_path):
-                logger.log("validate_file_name funtion Run Successfully....")
+                logger.log(f"validate_file_name funtion Validated Successfully the file {file_name} in path {file_path}....")
                 logger.log("load_data_from_path funtion Started....")
                 df = loader.load_data_from_path(file_path)
                 logger.log("validate_column_names funtion Started....")
-                data_validation.validate_column_names(df,file_path)
-                logger.log(
-                    "validate_column_names funtion Run Successfully....")
+
+                if data_validation.validate_column_names(df,file_path):
+                    logger.log(
+                        f"validate_column_names funtion Validated Successfully the file {file_name} in path {file_path}....")
+                    if data_validation.remove_columns_that_have_more_than_20_pc_null_values(df, file_path):
+                        logger.log(
+                            f"remove_columns_that_have_all_null_values funtion Validated Successfully the file {file_name} in path {file_path}....")
+
+                
 
 if __name__=='__main__':
     args=argparse.ArgumentParser()
