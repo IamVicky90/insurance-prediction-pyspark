@@ -32,4 +32,4 @@ class Logger:
             return 0
         except Exception as e:
             InsuranceException("Error in module {0} class {1} method {2}".format(
-                Logger.__module__.__str__, Logger.__class__.__name__, self.log.__name__),e)
+                Logger.__module__.__str__, Logger.__class__.__name__, self.log.__name__),sys)
