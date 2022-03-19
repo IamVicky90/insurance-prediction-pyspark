@@ -29,3 +29,6 @@ artifacts:
 data_schemas:
   prediction_schema: ./config/schema_prediction.json
   training_schema: ./config/schema_training.json
+data:
+  unwanted_columns: region
+  target_columns: expenses
