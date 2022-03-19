@@ -32,12 +32,12 @@ class Data_Validation:
         """
         try:
             Bad_Data_Directory = self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']
-            destination_folder=os.path.join(Bad_Data_Directory,utility.get_date(),utility.get_time())
-            self.create_bad_data_directory(destination_folder)
+            # destination_folder=os.path.join(Bad_Data_Directory,utility.get_date(),utility.get_time())
+            # self.create_bad_data_directory(destination_folder)
             shutil.move(
-                file_path, destination_folder)
+                file_path, Bad_Data_Directory)
             self.__logger.log(
-                f"Successfully move the file from path {file_path} to {destination_folder}")
+                f"Successfully move the file from path {file_path} to {Bad_Data_Directory}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__, Data_Validation.__class__.__name__, self.move_to_bad_archive_directory.__name__), sys)
@@ -51,13 +51,13 @@ class Data_Validation:
         """
         try:
             Good_Data_Directory = self.__config['artifacts']['Data_Directories']['training']['Good_Data_Directory']
-            destination_folder = os.path.join(
-                Good_Data_Directory, utility.get_date(), utility.get_time())
-            self.create_good_data_directory(destination_folder)
+            # destination_folder = os.path.join(
+            #     Good_Data_Directory, utility.get_date(), utility.get_time())
+            self.create_good_data_directory(Good_Data_Directory)
             shutil.copy(
-                file_path, destination_folder)
+                file_path, Good_Data_Directory)
             self.__logger.log( 
-                f"Successfully move the file from path {file_path} to {destination_folder}")
+                f"Successfully move the file from path {file_path} to {Good_Data_Directory}")
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Data_Validation.__module__, Data_Validation.__class__.__name__, self.copy_to_good_data_directory.__name__), sys)
