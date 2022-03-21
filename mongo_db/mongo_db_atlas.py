@@ -179,4 +179,19 @@ class Mongo_operations:
             
             raise error
 
+    def insert_many_records(self, records: dict, dbname: str, collection_name: str):
+        """Responsible to insert one record at a time
 
+        Args:
+            records (dict): Records that will be inserted.
+            dbname (str): Database name.
+            collection_name (str): Name of the collection
+
+        """
+        try:
+            collection = self.create_collection(dbname, collection_name)
+            collection.insert_many(records)
+        except Exception:
+            error = InsuranceException("Error in module {0} class {1} method {2}".format(
+                Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.insert_many_records.__name__), sys)
+            raise error
