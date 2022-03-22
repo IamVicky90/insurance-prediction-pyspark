@@ -1,6 +1,7 @@
+import utility
+from mongo_db import mongo_db_atlas
 import pymongo
 import os
-import utility
 from insurance_exception.insurance_exception import InsuranceException
 import sys
 class Mongo_operations:
@@ -120,20 +121,24 @@ class Mongo_operations:
                 Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.create_collection.__name__), sys)
             
             raise error
-    def is_collection_present(self, collection_name: str,database)-> bool:
+
+    def is_collection_present(self, collection_name: str, dbname: str) -> bool:
         """Check if collection  is present in the database or not
 
         Args:
             collection_name (str): Name of the collection to check its existence
-            database (mongo_db database): Name of the database.
+            database (str): Name of the database.
 
         Returns:
             bool: True if collection is present in the database, False otherwise.
         """
         try:
-            if collection_name in database.list_collection_names():
-                return True
-            return False
+            if self.is_database_present(dbname):
+                client = self.get_mongodb_client()
+                database=client[dbname]
+                if collection_name in database.list_collection_names():
+                    return True
+                return False
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.is_collection_present.__name__), sys)
@@ -195,3 +200,24 @@ class Mongo_operations:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
                 Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.insert_many_records.__name__), sys)
             raise error
+
+    def get_data_from_mongo_db(self,dbname, collection_name):
+        """To get the data from Mongo_DB
+
+        Args:
+            dbname (str): Name of the database
+            collection_name (str): Name of the collection that present in database
+        """
+        try:
+            if self.is_database_present(dbname):
+                if self.is_collection_present(collection_name,dbname):
+                    client=self.get_mongodb_client()
+                    collection=client[dbname][collection_name]
+                    import pandas as pd
+                    df=pd.DataFrame(collection.find({}))
+                    return df
+        except Exception:
+            error = InsuranceException("Error in module {0} class {1} method {2}".format(
+                Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.get_data_from_mongo_db.__name__), sys)
+            raise error
+
