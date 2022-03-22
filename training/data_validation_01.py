@@ -34,6 +34,7 @@ class Data_Validation:
             Bad_Data_Directory = self.__config['artifacts']['Data_Directories']['training']['Bad_Data_Directory']
             # destination_folder=os.path.join(Bad_Data_Directory,utility.get_date(),utility.get_time())
             # self.create_bad_data_directory(destination_folder)
+            self.create_bad_data_directory(Bad_Data_Directory)
             shutil.move(
                 file_path, Bad_Data_Directory)
             self.__logger.log(
