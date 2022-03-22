@@ -84,8 +84,10 @@ class Data_Transformation:
             df (spark.data.DataFrame): expected a spark dataframe.
         """
         try:
+            dbname=self.__config['database_for_data']['database_name']
+            collection_name=self.__config['database_for_data']['collection_name']
             self.__db.insert_many_records(records=df.toPandas().T.to_dict().values(
-            ), dbname='insurance_data', collection_name='training_data')
+            ), dbname=dbname, collection_name=collection_name)
         except Exception:
             error = Transformation_Exception("Error in module {0} class {1} method {2}".format(
                 Data_Transformation.__module__.__str__, Data_Transformation.__class__.__name__, self.import_data_to_mongodb.__name__), sys)
