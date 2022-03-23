@@ -25,6 +25,11 @@ artifacts:
       Bad_Data_Directory: ./artifacts/training_data/bad_raw_data/
       master_csv_path: ./artifacts/training_data/master_csv/
       master_csv_filename: Master.csv
+      pipelining_path: pipelining
+  model:
+    model_path: ./artifacts/training_data/model/
+    model_name: random_forest_regressor
+
 
     prediction:
       Good_Data_Directory: ./artifacts/prediction_data/good_raw_data/
