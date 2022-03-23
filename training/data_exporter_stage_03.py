@@ -27,9 +27,10 @@ class export_data:
         """
         try:
             self.__logger.log("inside convert_mongo_data_to_master_csv funtion")
-            df = self.__db.get_data_from_mongo_db(db_name, collection_name)
+            df = self.__db.get_data_from_mongo_db(db_name, collection_name)[
+                utility.read_params()["data"]["main_columns"]]
             self.__logger.log("dataframe extracted")
-            df.to_csv(os.path.join(path,master_csv_filename))
+            df.to_csv(os.path.join(path,master_csv_filename),index=False)
         except Exception:
             error = Export_Data_Exception("Error in module {0} class {1} method {2}".format(
                 export_data.__module__.__str__, export_data.__class__.__name__, self.convert_mongo_data_to_master_csv.__name__), sys)
