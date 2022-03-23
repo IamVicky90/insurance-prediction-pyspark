@@ -35,6 +35,9 @@ data_schemas:
 data:
   unwanted_columns: [region]
   target_column: expenses
+  catagorical_columns: ['sex','smoker']
+  main_columns: ["age","sex","bmi","children","smoker","expenses"]
+  required_features_for_Vector_Assembler: ["age", "bmi","children", "sex_encoderd","smoker_encoderd"]
 database_for_data:
   database_name:
     insurance_data
