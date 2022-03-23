@@ -76,7 +76,7 @@ class Data_Validation:
         Args:
             path (str): path of the Bad Data directory
         """
-        utility.create_directory(path)
+        utility.create_directory(path,is_recreate=True)
 
     def validate_file_name(self, file_name: str,file_path:str):
         """For validating the name of the file with the given schema
@@ -113,7 +113,7 @@ class Data_Validation:
             f"column names of file {file_path} match with the schema")
         return 1
 
-    def remove_columns_that_have_more_than_20_pc_null_values(self, df, file_path):
+    def remove_file_that_have_more_than_20_pc_null_values_in_columns(self, df, file_path):
         """Remove the columns that have more than 20 % null values
 
         Args:
@@ -153,11 +153,12 @@ def validation_main(datasource,collection_name:str,config,is_log_enabled:bool):
                 logger.log("load_data_from_path funtion Started....")
                 df = loader.load_data_from_path(file_path)
                 logger.log("validate_column_names funtion Started....")
-
+                file_path = utility.read_params(
+                )['artifacts']['Data_Directories']['training']['Good_Data_Directory']
                 if data_validation.validate_column_names(df,file_path):
                     logger.log(
                         f"validate_column_names funtion Validated Successfully the file {file_name} in path {file_path}....")
-                    if data_validation.remove_columns_that_have_more_than_20_pc_null_values(df, file_path):
+                    if data_validation.remove_file_that_have_more_than_20_pc_null_values_in_columns(df, file_path):
                         logger.log(
                             f"remove_columns_that_have_all_null_values funtion Validated Successfully the file {file_name} in path {file_path}....")
 
