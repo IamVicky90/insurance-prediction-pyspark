@@ -5,6 +5,7 @@ from pyspark.ml.feature import OneHotEncoder
 from pyspark.ml.feature import StringIndexer
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml import Pipeline
+from pyspark.sql.types import IntegerType, StringType, FloatType
 log_collection_name = "Training_model"
 class Data_Preprocessing:
     def __init__(self,logger,is_log_enabled: bool,dataframe,pipeline_path:str):
@@ -47,7 +48,23 @@ class Data_Preprocessing:
         """
         df_train, df_test = self.__dataframe.randomSplit(
             weights=[1-test_size, test_size], seed=random_state)
+
+    def update_dataframe_scheme(self, schema_definition):
+        print(self.__dataframe.printSchema())
+        for col_name, dtype in schema_definition.items():
+            self.__dataframe = self.__dataframe.withColumn(
+                col_name, self.__dataframe[col_name].cast(dtype))
+        print('.......................................')
+        print(self.__dataframe.printSchema())
     def get_prepaired_data_set(self):
+        schema_definition = {"age": IntegerType(),
+                             "sex": StringType(),
+                             "bmi": FloatType(),
+                             "children": IntegerType(),
+                             "smoker": StringType(),
+                             "expenses": FloatType()
+                             }
+        self.update_dataframe_scheme(schema_definition=schema_definition)
         self.encode_catagorical_features(
             utility.read_params()['data']['catagorical_columns'])
         self.create_input_features(utility.read_params(
