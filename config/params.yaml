@@ -48,4 +48,7 @@ database_for_data:
     insurance_data
   collection_name:
     training_data
+kafka:
+  topic: "insurance_stream"
+  kafka_bootstrap_server: localhost:9092
 
