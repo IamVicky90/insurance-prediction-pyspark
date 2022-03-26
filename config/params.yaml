@@ -26,14 +26,16 @@ artifacts:
       master_csv_path: ./artifacts/training_data/master_csv/
       master_csv_filename: Master.csv
       pipelining_path: ./artifacts/pipelining
+    prediction:
+      Good_Data_Directory: ./artifacts/prediction_data/good_raw_data/
+      Bad_Data_Directory: ./artifacts/prediction_data/bad_raw_data/
+      master_csv_path: ./artifacts/prediction_data/master_csv/
+      master_csv_filename: Master.csv
   model:
     model_path: ./artifacts/training_data/model/
     model_name: random_forest_regressor
 
 
-    prediction:
-      Good_Data_Directory: ./artifacts/prediction_data/good_raw_data/
-      Bad_Data_Directory: ./artifacts/prediction_data/bad_raw_data/
 data_schemas:
   prediction_schema: ./config/schema_prediction.json
   training_schema: ./config/schema_training.json
@@ -42,16 +44,23 @@ data:
   target_column: expenses
   catagorical_columns: ['sex','smoker']
   main_columns: ["age","sex","bmi","children","smoker","expenses"]
+  prediction_main_columns: ["age","sex","bmi","children","smoker"]
   required_features_for_Vector_Assembler: ["age", "bmi","children", "sex_encoderd","smoker_encoderd"]
 database_for_data:
   database_name:
     insurance_data
   collection_name:
     training_data
+database_for_prediction_data:
+  database_name:
+    insurance_data
+  collection_name:
+    prediction_data
 kafka:
   topic: "insurance_stream"
   kafka_bootstrap_server: localhost:9092
 streaming_data:
   collection_name: "prediction_streaming"
   processingTime: "5 seconds"
-
+prediction_data:
+  collection_name: "prediction_batch_data"
