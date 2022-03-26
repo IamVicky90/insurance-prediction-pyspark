@@ -198,7 +198,7 @@ class Mongo_operations:
             collection.insert_many(records)
         except Exception:
             error = InsuranceException("Error in module {0} class {1} method {2}".format(
-                Mongo_operations.__module__.__str__, Mongo_operations.__class__.__name__, self.insert_many_records.__name__), sys)
+                Mongo_operations.__module__, Mongo_operations.__class__.__name__, self.insert_many_records.__name__), sys)
             raise error
 
     def get_data_from_mongo_db(self,dbname, collection_name):
