@@ -8,6 +8,7 @@
         "sex": "varchar",
         "bmi": "float",
         "children": "Integer",
-        "smoker": "varchar"
+        "smoker": "varchar",
+        "region": " varchar"
     }
 }
