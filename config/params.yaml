@@ -25,7 +25,7 @@ artifacts:
       Bad_Data_Directory: ./artifacts/training_data/bad_raw_data/
       master_csv_path: ./artifacts/training_data/master_csv/
       master_csv_filename: Master.csv
-      pipelining_path: pipelining
+      pipelining_path: ./artifacts/pipelining
   model:
     model_path: ./artifacts/training_data/model/
     model_name: random_forest_regressor
@@ -51,4 +51,7 @@ database_for_data:
 kafka:
   topic: "insurance_stream"
   kafka_bootstrap_server: localhost:9092
+streaming_data:
+  collection_name: "prediction_streaming"
+  processingTime: "5 seconds"
 
