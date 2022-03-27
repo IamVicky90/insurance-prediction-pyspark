@@ -41,7 +41,7 @@ export MONGO_PASSWORD="(write the mongodb atlas password)"
 
 ## Plugins
 
-Set Spark in Ubuntu 2-0.04 LTS.
+Set Spark environment in Ubuntu 20.04 LTS.
 ```sh
 export SPARK_HOME=/opt/spark
 export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
