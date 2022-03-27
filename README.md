@@ -36,7 +36,7 @@ Setting the environment Variable...
 
 ```sh
 export MONGO_USER="(write the mongodb attlas user name)"
-MONGO_PASSWORD="(write the mongodb atlas password)"
+export MONGO_PASSWORD="(write the mongodb atlas password)"
 ```
 
 ## Plugins
